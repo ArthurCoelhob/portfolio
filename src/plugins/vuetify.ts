@@ -10,8 +10,8 @@ export default new Vuetify({
     },
     themes: {
       light: {
-        primary: '#1E88E5', // Azul moderno
-        secondary: '#5C6BC0', // Índigo suave
+        primary: '#1E88E5',
+        secondary: '#5C6BC0',
         accent: '#82B1FF',
         error: '#FF5252',
         info: '#2196F3',
@@ -21,7 +21,7 @@ export default new Vuetify({
         surface: '#ffffff'
       },
       dark: {
-        primary: '#90CAF9', // Azul mais claro para modo escuro
+        primary: '#90CAF9',
         secondary: '#7986CB',
         accent: '#82B1FF',
         error: '#FF5252',

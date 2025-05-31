@@ -27,12 +27,12 @@
                     </v-avatar>
                     <div class="ml-4">
                       <div class="text-h6 font-weight-bold">{{ education.institution }}</div>
-                      <div class="subtitle-1 grey--text">{{ education.period }}</div>
+                      <div class="subtitle-1 text--secondary">{{ education.period }}</div>
                     </div>
                   </div>
 
                   <h3 class="text-h6 mb-3">{{ education.degree }}</h3>
-                  <p class="grey--text text--darken-1">{{ education.description }}</p>
+                  <p class="text--secondary">{{ education.description }}</p>
 
                   <v-chip-group class="mt-4">
                     <v-chip
@@ -84,7 +84,7 @@ export default {
 
 <style scoped>
 .education-section {
-  background-color: #ffffff;
+  background-color: var(--v-background-base);
 }
 
 .divider {
@@ -97,7 +97,11 @@ export default {
 .education-card {
   border-radius: 12px;
   transition: all 0.3s ease;
-  border: 1px solid #eee;
+  border: 1px solid var(--v-border-base);
+}
+
+.v-application .education-card {
+  background-color: var(--v-surface-base);
 }
 
 .education-card:hover {

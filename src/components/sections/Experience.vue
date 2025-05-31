@@ -16,7 +16,7 @@
               small
             >
               <template v-slot:opposite>
-                <span class="text-caption grey--text">{{ experience.period }}</span>
+                <span class="text-caption text--secondary">{{ experience.period }}</span>
               </template>
               <v-card class="experience-card elevation-2">
                 <v-card-title class="text-h6 mb-1">
@@ -31,7 +31,7 @@
                   </v-chip>
                 </v-card-title>
                 <v-card-text>
-                  <p class="mb-2 grey--text text--darken-1">{{ experience.description }}</p>
+                  <p class="mb-2 text--secondary">{{ experience.description }}</p>
                   <v-chip-group>
                     <v-chip
                       v-for="(tech, techIndex) in experience.technologies"
@@ -81,7 +81,7 @@ export default {
 
 <style scoped>
 .experience-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background-color: var(--v-background-base);
 }
 
 .divider {
@@ -96,6 +96,10 @@ export default {
   margin-bottom: 24px;
   border-radius: 8px;
   transition: transform 0.3s ease;
+}
+
+.v-application .experience-card {
+  background-color: var(--v-surface-base);
 }
 
 .experience-card:hover {

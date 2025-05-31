@@ -19,8 +19,8 @@
                     ></v-img>
                   </v-avatar>
                   <div class="experience-badge">
-                    <span class="text-h5 font-weight-bold white--text">{{ experienceYears }}+</span>
-                    <span class="caption white--text">Anos de<br>Experiência</span>
+                    <span class="text-h5 font-weight-bold">{{ experienceYears }}+</span>
+                    <span class="caption">Anos de<br>Experiência</span>
                   </div>
                 </div>
               </v-col>
@@ -30,8 +30,8 @@
                   <h3 class="text-h5 font-weight-bold mb-4">
                     {{ role }}
                   </h3>
-                  <p class="text-body-1 grey--text text--darken-1 mb-6" v-html="description"></p>
-                  <p class="text-body-1 grey--text text--darken-1 mb-8" v-html="additionalInfo"></p>
+                  <p class="text-body-1 text--secondary mb-6" v-html="description"></p>
+                  <p class="text-body-1 text--secondary mb-8" v-html="additionalInfo"></p>
                   
                   <v-btn
                     color="primary"
@@ -63,26 +63,24 @@ export default class AboutSection extends Vue {
   private cvLink = '#';
 
   private description = `
-    Lorem ipsum dolor sit amet consectetur adipisicing  
-    Lorem ipsum dolor sit amet consectetur adipisicing
-    Lorem ipsum dolor sit amet consectetur adipisicing
-    Lorem ipsum dolor sit amet consectetur adipisicing
-    Lorem ipsum dolor sit amet consectetur adipisicing
+    Sou um Desenvolvedor Full Stack apaixonado por desenvolvimento web, com mais de 4 anos de experiência 
+    na criação de soluções robustas e escaláveis. Minha especialidade está no desenvolvimento de APIs REST 
+    e sistemas completos, combinando tecnologias back-end como PHP e Node.js com front-end moderno 
+    utilizando TypeScript e Vue.js.
   `;
 
   private additionalInfo = `
-    Lorem ipsum dolor sit amet consectetur adipisicing  
-    Lorem ipsum dolor sit amet consectetur adipisicing
-    Lorem ipsum dolor sit amet consectetur adipisicing
-    Lorem ipsum dolor sit amet consectetur adipisicing
-    Lorem ipsum dolor sit amet consectetur adipisicing
+    Tenho forte experiência em banco de dados SQL (especialmente Oracle) e práticas de DevOps/CI/CD. 
+    Um dos meus maiores reconhecimentos foi vencer o hackathon interno da Teknisa, desenvolvendo uma 
+    API de reconhecimento facial utilizando Docker, Python e FastAPI. Esta conquista demonstra minha 
+    capacidade de inovar e me adaptar rapidamente a novos desafios e tecnologias.
   `;
 }
 </script>
 
 <style scoped>
 .about-section {
-  background-color: #f8f9fa;
+  background-color: var(--v-background-base);
   position: relative;
 }
 
@@ -99,7 +97,7 @@ export default class AboutSection extends Vue {
 }
 
 .profile-image {
-  border: 8px solid white;
+  border: 8px solid var(--v-surface-base);
   box-shadow: 0 0 25px rgba(0,0,0,0.08);
 }
 
@@ -112,11 +110,12 @@ export default class AboutSection extends Vue {
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  color: white;
 }
 
 .stat-item {
   padding: 20px;
-  background: white;
+  background: var(--v-surface-base);
   border-radius: 8px;
   box-shadow: 0 2px 15px rgba(0,0,0,0.04);
   transition: transform 0.3s ease;
