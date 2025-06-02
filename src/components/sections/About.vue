@@ -12,10 +12,13 @@
             <v-row align="center">
               <v-col cols="12" md="5" class="text-center">
                 <div class="profile-image-wrapper">
-                  <v-avatar size="280" class="profile-image">
+                  <v-avatar size="320" class="profile-image">
                     <v-img
-                      src="@/assets/images/Frieren.jpeg"
-                      alt="Frieren"
+                      src="@/assets/images/arthurProfile.jpeg"
+                      alt="Arthur"
+                      :aspect-ratio="1"
+                      class="profile-img"
+                      cover
                     ></v-img>
                   </v-avatar>
                   <div class="experience-badge">
@@ -37,10 +40,10 @@
                     color="primary"
                     x-large
                     outlined
-                    :href="cvLink"
-                    target="_blank"
+                    @click="handleCVDownload"
                     class="mt-6 mb-6 mr-6 text-capitalize px-8"
                   >
+                    <v-icon left>mdi-download</v-icon>
                     Download CV
                   </v-btn>
                 </div>
@@ -60,7 +63,11 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class AboutSection extends Vue {
   private role = 'Desenvolvedor Full Stack';
   private experienceYears = 4;
-  private cvLink = '#';
+  private cvLink = 'https://drive.google.com/uc?export=download&id=1ztDwPyyo64gJIZYHvqCRQoDdJ5hwfRwN';
+
+  private handleCVDownload() {
+    window.open(this.cvLink, '_blank');
+  }
 
   private description = `
     Sou um Desenvolvedor Full Stack apaixonado por desenvolvimento web, com mais de 4 anos de experiência 
@@ -94,11 +101,24 @@ export default class AboutSection extends Vue {
 .profile-image-wrapper {
   position: relative;
   display: inline-block;
+  margin: 20px auto;
+  padding-right: 30px;
+  padding-bottom: 30px;
 }
 
 .profile-image {
   border: 8px solid var(--v-surface-base);
-  box-shadow: 0 0 25px rgba(0,0,0,0.08);
+  box-shadow: 0 0 25px rgba(0,0,0,0.12);
+  transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+  transform: scale(1.02);
+}
+
+.profile-img {
+  object-fit: cover;
+  object-position: center 20%;
 }
 
 .experience-badge {
@@ -106,11 +126,22 @@ export default class AboutSection extends Vue {
   bottom: 0;
   right: 0;
   background: var(--v-primary-base);
-  padding: 15px;
-  border-radius: 8px;
+  padding: 15px 20px;
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   color: white;
+  z-index: 1;
+}
+
+.experience-badge .text-h5 {
+  font-size: 1.8rem !important;
+  line-height: 1.2;
+}
+
+.experience-badge .caption {
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
 .stat-item {

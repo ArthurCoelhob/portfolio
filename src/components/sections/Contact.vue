@@ -8,60 +8,14 @@
             <div class="divider mx-auto"></div>
           </div>
 
-          <v-row>
-            <v-col cols="12" md="5">
-              <v-card class="contact-info-card pa-6" flat>
-                <h3 class="text-h5 font-weight-bold mb-6">Informações de Contato</h3>
-                
-                <div class="contact-item d-flex align-center mb-6">
-                  <v-avatar color="primary" size="36" class="mr-4">
-                    <v-icon dark>mdi-email</v-icon>
-                  </v-avatar>
-                  <div>
-                    <div class="subtitle-1 font-weight-medium">Email</div>
-                    <a href="mailto:arthurcoelhoob@gmail.com" class="text-decoration-none grey--text">
-                      arthurcoelhoob@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                <div class="contact-item d-flex align-center mb-6">
-                  <v-avatar color="primary" size="36" class="mr-4">
-                    <v-icon dark>mdi-map-marker</v-icon>
-                  </v-avatar>
-                  <div>
-                    <div class="subtitle-1 font-weight-medium">Localização</div>
-                    <span class="grey--text">Belo Horizonte, Minas Gerais</span>
-                  </div>
-                </div>
-
-                <div class="social-links mt-8">
-                  <h4 class="subtitle-1 font-weight-bold mb-4">Redes Sociais</h4>
-                  <v-btn
-                    v-for="social in socialLinks"
-                    :key="social.name"
-                    :href="social.link"
-                    target="_blank"
-                    icon
-                    large
-                    :color="social.color"
-                    class="mr-4"
-                  >
-                    <v-icon>{{ social.icon }}</v-icon>
-                  </v-btn>
-                </div>
-              </v-card>
-            </v-col>
-
-            <v-col cols="12" md="7">
-              <v-card class="contact-form-card pa-6">
-                <h3 class="text-h5 font-weight-bold mb-6">Envie uma Mensagem</h3>
-                
-                <v-form ref="form" v-model="valid" @submit.prevent="handleSubmit">
+          <v-row justify="center">
+            <v-col cols="12" md="8">
+              <v-card class="contact-card pa-6" elevation="3">
+                <v-form ref="form" v-model="isFormValid" @submit.prevent="handleSubmit">
                   <v-row>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" md="6">
                       <v-text-field
-                        v-model="form.name"
+                        v-model="formData.name"
                         :rules="nameRules"
                         label="Nome"
                         required
@@ -70,20 +24,22 @@
                       ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" md="6">
                       <v-text-field
-                        v-model="form.email"
+                        v-model="formData.email"
                         :rules="emailRules"
                         label="Email"
                         required
                         outlined
                         dense
+                        type="email"
                       ></v-text-field>
                     </v-col>
 
                     <v-col cols="12">
                       <v-text-field
-                        v-model="form.subject"
+                        v-model="formData.subject"
+                        :rules="subjectRules"
                         label="Assunto"
                         required
                         outlined
@@ -93,20 +49,24 @@
 
                     <v-col cols="12">
                       <v-textarea
-                        v-model="form.message"
+                        v-model="formData.message"
+                        :rules="messageRules"
                         label="Mensagem"
                         required
                         outlined
                         dense
+                        auto-grow
+                        rows="4"
                       ></v-textarea>
                     </v-col>
 
-                    <v-col cols="12" class="text-right">
+                    <v-col cols="12" class="text-center">
                       <v-btn
+                        type="submit"
                         color="primary"
                         x-large
-                        :loading="loading"
-                        type="submit"
+                        :loading="isLoading"
+                        :disabled="!isFormValid || isLoading"
                         class="px-8"
                       >
                         Enviar Mensagem
@@ -120,54 +80,134 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-snackbar
+      v-model="snackbar.show"
+      :color="snackbar.color"
+      :timeout="6000"
+      top
+    >
+      {{ snackbar.text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          text
+          v-bind="attrs"
+          @click="snackbar.show = false"
+        >
+          Fechar
+        </v-btn>
+      </template>
+    </v-snackbar>
   </section>
 </template>
 
-<script>
-export default {
-  name: 'ContactSection',
-  data: () => ({
-    valid: false,
-    loading: false,
-    form: {
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    },
-    nameRules: [
-      v => !!v || 'Nome é obrigatório',
-      v => v.length <= 50 || 'Nome deve ter menos de 50 caracteres'
-    ],
-    emailRules: [
-      v => !!v || 'E-mail é obrigatório',
-      v => /.+@.+\..+/.test(v) || 'E-mail deve ser válido'
-    ],
-    socialLinks: [
-      {
-        name: 'LinkedIn',
-        icon: 'mdi-linkedin',
-        link: 'https://www.linkedin.com/in/arthur-coelho-5351441b4/',
-        color: '#0077B5'  
-      },
-      {
-        name: 'GitHub',
-        icon: 'mdi-github',
-        link: 'https://github.com/ArthurCoelhob',
-        color: '#333'
-      },
-    ]
-  }),
-  methods: {
-    async handleSubmit() {
-      if (this.$refs.form.validate()) {
-        this.loading = true;
-        // Aqui você implementaria a lógica de envio do formulário
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulação de envio
-        this.loading = false;
-        // Reset do formulário
-        this.$refs.form.reset();
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import emailjs from '@emailjs/browser';
+import { emailjsConfig } from '@/config/emailjs';
+
+interface ContactForm {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+interface Snackbar {
+  show: boolean;
+  text: string;
+  color: string;
+}
+
+@Component
+export default class ContactSection extends Vue {
+  private formData: ContactForm = {
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  };
+
+  private isFormValid = false;
+  private isLoading = false;
+
+  private snackbar: Snackbar = {
+    show: false,
+    text: '',
+    color: 'success'
+  };
+
+  private nameRules = [
+    (v: string) => !!v || 'Nome é obrigatório',
+    (v: string) => v.length >= 3 || 'Nome deve ter pelo menos 3 caracteres'
+  ];
+
+  private emailRules = [
+    (v: string) => !!v || 'Email é obrigatório',
+    (v: string) => /.+@.+\..+/.test(v) || 'Email deve ser válido'
+  ];
+
+  private subjectRules = [
+    (v: string) => !!v || 'Assunto é obrigatório',
+    (v: string) => v.length >= 5 || 'Assunto deve ter pelo menos 5 caracteres'
+  ];
+
+  private messageRules = [
+    (v: string) => !!v || 'Mensagem é obrigatória',
+    (v: string) => v.length >= 10 || 'Mensagem deve ter pelo menos 10 caracteres'
+  ];
+
+  created() {
+    if (emailjsConfig.publicKey) {
+      emailjs.init(emailjsConfig.publicKey);
+    }
+  }
+
+  private showSnackbar(text: string, color: string = 'success'): void {
+    this.snackbar = {
+      show: true,
+      text,
+      color
+    };
+  }
+
+  private async handleSubmit(): Promise<void> {
+    if (!(this.$refs.form as any).validate()) return;
+
+    this.isLoading = true;
+
+    try {
+      const templateParams = {
+        from_name: this.formData.name,
+        from_email: this.formData.email,
+        subject: this.formData.subject,
+        message: this.formData.message,
+        to_name: 'Arthur',
+      };
+
+      if (!emailjsConfig.serviceId || !emailjsConfig.templateId) {
+        throw new Error('EmailJS configuration is missing');
       }
+
+      await emailjs.send(
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
+        templateParams
+      );
+
+      this.showSnackbar('Mensagem enviada com sucesso!');
+      (this.$refs.form as any).reset();
+      this.formData = {
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      };
+    } catch (error) {
+      console.error('Erro ao enviar email:', error);
+      this.showSnackbar('Erro ao enviar mensagem. Tente novamente.', 'error');
+    } finally {
+      this.isLoading = false;
     }
   }
 }
@@ -175,7 +215,7 @@ export default {
 
 <style scoped>
 .contact-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background-color: var(--v-background-base);
 }
 
 .divider {
@@ -185,37 +225,12 @@ export default {
   margin-top: 16px;
 }
 
-.contact-info-card, .contact-form-card {
+.contact-card {
   border-radius: 12px;
-  height: 100%;
-  transition: all 0.3s ease;
-  border: 1px solid #eee;
+  transition: transform 0.3s ease;
 }
 
-.contact-info-card:hover, .contact-form-card:hover {
+.contact-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
-}
-
-.contact-item {
-  transition: transform 0.3s ease;
-}
-
-.contact-item:hover {
-  transform: translateX(5px);
-}
-
-.social-links .v-btn {
-  transition: transform 0.3s ease;
-}
-
-.social-links .v-btn:hover {
-  transform: translateY(-3px);
-}
-
-@media (max-width: 960px) {
-  .contact-info-card {
-    margin-bottom: 30px;
-  }
 }
 </style> 

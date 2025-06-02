@@ -35,6 +35,8 @@
       <ProjectsSection />
       <ContactSection />
     </v-main>
+
+    <ScrollToTop />
   </v-app>
 </template>
 
@@ -47,6 +49,7 @@ import EducationSection from './components/sections/Education.vue';
 import SkillsSection from './components/sections/Skills.vue';
 import ProjectsSection from './components/sections/Projects.vue';
 import ContactSection from './components/sections/Contact.vue';
+import ScrollToTop from './components/ScrollToTop.vue';
 
 interface MenuItem {
   title: string;
@@ -62,6 +65,7 @@ interface MenuItem {
     SkillsSection,
     ProjectsSection,
     ContactSection,
+    ScrollToTop,
   },
 })
 export default class App extends Vue {

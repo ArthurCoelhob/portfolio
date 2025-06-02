@@ -14,9 +14,12 @@
               :key="index"
               :color="experience.color"
               small
+              class="mb-6"
             >
               <template v-slot:opposite>
-                <span class="text-caption text--secondary">{{ experience.period }}</span>
+                <div class="period-text">
+                  {{ experience.period }}
+                </div>
               </template>
               <v-card class="experience-card elevation-2">
                 <v-card-title class="text-h6 mb-1">
@@ -30,6 +33,9 @@
                     {{ experience.company }}
                   </v-chip>
                 </v-card-title>
+                <v-card-subtitle class="pb-2">
+                  <span class="period-text">{{ experience.period }}</span>
+                </v-card-subtitle>
                 <v-card-text>
                   <p class="mb-2 text--secondary">{{ experience.description }}</p>
                   <v-chip-group>
@@ -59,20 +65,44 @@ export default {
   data: () => ({
     experiences: [
       {
-        role: 'Desenvolvedor Full Stack',
-        company: 'Teknisa',
-        period: '2022 - Atual',
-        color: 'primary',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
-        technologies: ['Vue.js', 'TypeScript', 'JavaScript', 'PHP', 'Oracle SQL', 'REST APIs']
+        role        : 'Desenvolvedor Full Stack',
+        company     : 'Teknisa',
+        period      : '2022 - Atual',
+        color       : 'primary',
+        description : 'Desenvolvimento e manutenção de funcionalidades nos sistemas Portal do Gestor, Portal do Funcionário e HCM (Human Capital Management) para clientes do setor DP/administrativo. Criação e implementação de APIs REST utilizando PHP com Doctrine ORM. Desenvolvimento e manutenção de consultas SQL em banco de dados Oracle. Desenvolvimento Front-End com TypeScript, JavaScript, Vue.js e Angular.js. Atuação ativa na condução de reuniões e cerimônias ágeis (Scrum e Kanban), garantindo organização e alinhamento entre equipes.',
+        technologies: [
+          'Vue.js',
+          'TypeScript',
+          'JavaScript',
+          'PHP',
+          'Doctrine ORM',
+          'Oracle SQL',
+          'REST APIs',
+          'Git',
+          'Docker',
+          'Angular.js',
+          'HTML5/CSS3',
+          'Vuetify',
+          'Metodologias Ágeis'
+        ]
       },
       {
-        role: 'Estagiário de Programação',
-        company: 'Teknisa',
-        period: '2021 - 2022',
-        color: 'secondary',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
-        technologies: ['SQL', 'Vue.js', 'TypeScript', 'CSS']
+        role        : 'Estagiário de Desenvolvimento',
+        company     : 'Teknisa',
+        period      : '2021 - 2022',
+        color       : 'secondary',
+        description : 'Desenvolvimento de funcionalidades para o sistema de gestão de processos de uma empresa de tecnologia. Utilizando Vue.js, TypeScript e JavaScript. Atuação ativa na condução de reuniões e cerimônias ágeis (Scrum e Kanban), garantindo organização e alinhamento entre equipes.',
+        technologies: [
+          'Vue.js',
+          'TypeScript',
+          'JavaScript',
+          'HTML5/CSS3',
+          'Git',
+          'SQL',
+          'Vuetify',
+          'Metodologias Ágeis',
+          'PHP'
+        ]
       }
     ]
   })
@@ -110,9 +140,22 @@ export default {
   background: linear-gradient(to bottom, var(--v-primary-base), var(--v-secondary-base));
 }
 
+.period-text {
+  color: var(--v-secondary-base);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.v-card-subtitle {
+  opacity: 1 !important;
+}
+
 @media (max-width: 600px) {
   .experience-card {
     margin-left: 0;
+  }
+  .period-text {
+    font-size: 0.75rem;
   }
 }
 </style> 

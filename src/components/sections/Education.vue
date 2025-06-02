@@ -63,19 +63,17 @@ export default {
     educations: [
       {
         institution: 'PUC Minas',
-        degree: 'Pós-graduação em Engenharia de Software',
-        period: 'abril de 2023 - Atual',
-        color: 'primary',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
-        status: ['Incompleto']
+        degree     : 'Pós-graduação em Engenharia de Software',
+        period     : '2023 - 2024',
+        color      : 'primary',
+        status     : ['Incompleto']
       },
       {
         institution: 'Anhanguera Educacional',
-        degree: 'Tecnólogo em Análise e Desenvolvimento de Sistemas',
-        period: 'dezembro de 2021',
-        color: 'secondary',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.',
-        status: ['Completo']
+        degree     : 'Tecnólogo em Análise e Desenvolvimento de Sistemas',
+        period     : '2020 - 2022',
+        color      : 'secondary',
+        status     : ['Completo']
       }
     ]
   })
