@@ -2,7 +2,7 @@
   <v-app :dark="isDark">
     <v-app-bar app elevation="1" :color="isDark ? 'grey darken-4' : 'white'" height="70">
       <v-container class="py-0 fill-height">
-        <v-toolbar-title class="font-weight-bold primary--text">AC.</v-toolbar-title>
+        <v-toolbar-title class="font-weight-bold primary--text logo-clickable" @click="scrollToTop">AC.</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="hidden-sm-and-down">
           <v-btn text v-for="item in menuItems" :key="item.title" :href="item.href" class="text-capitalize font-weight-regular">
@@ -95,6 +95,10 @@ export default class App extends Vue {
     localStorage.setItem('isDark', JSON.stringify(this.isDark));
   }
 
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   @Watch('isDark', { immediate: true })
   onThemeChange(val: boolean): void {
     this.$vuetify.theme.dark = val;
@@ -138,5 +142,14 @@ html {
 .theme--dark .skills-section,
 .theme--dark .projects-section {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.logo-clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.logo-clickable:hover {
+  transform: scale(1.1);
 }
 </style>

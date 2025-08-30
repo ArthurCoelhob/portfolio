@@ -8,13 +8,23 @@
             <div class="divider mx-auto"></div>
           </div>
 
-          <v-row>
-            <v-col v-for="(project, index) in projects" 
-                   :key="index" 
-                   cols="12" 
-                   md="6" 
-                   lg="4">
-              <v-card class="project-card h-100" elevation="3">
+          <div class="projects-container">
+            <v-btn 
+              icon 
+              class="nav-btn nav-btn-left" 
+              @click="scrollLeft"
+              :disabled="!canScrollLeft"
+            >
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+            
+            <div class="projects-scroll" ref="projectsScroll" @scroll="updateScrollButtons">
+              <v-card 
+                v-for="(project, index) in projects" 
+                :key="index" 
+                class="project-card" 
+                elevation="3"
+              >
                 <v-card-title class="text-h6 d-flex align-center">
                   {{ project.title }}
                 </v-card-title>
@@ -66,8 +76,17 @@
                   </v-btn>
                 </v-card-actions>
               </v-card>
-            </v-col>
-          </v-row>
+            </div>
+            
+            <v-btn 
+              icon 
+              class="nav-btn nav-btn-right" 
+              @click="scrollRight"
+              :disabled="!canScrollRight"
+            >
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -88,30 +107,67 @@ interface Project {
 
 @Component
 export default class ProjectsSection extends Vue {
+  private canScrollLeft = false;
+  private canScrollRight = true;
+
+  mounted() {
+    this.updateScrollButtons();
+  }
+
+  private scrollLeft(): void {
+    const container = this.$refs.projectsScroll as HTMLElement;
+    const scrollAmount = (350 + 24) * 2;
+    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  }
+
+  private scrollRight(): void {
+    const container = this.$refs.projectsScroll as HTMLElement;
+    const scrollAmount = (350 + 24) * 2;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  }
+
+  private updateScrollButtons(): void {
+    const container = this.$refs.projectsScroll as HTMLElement;
+    if (!container) return;
+    
+    this.canScrollLeft = container.scrollLeft > 0;
+    this.canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth);
+  }
   private projects: Project[] = [
     {
       title: 'API de Reconhecimento Facial',
       technologies: ['Python', 'FastAPI', 'Docker', 'OpenCV'],
-      description: `Vencedor do hackathon interno da Teknisa. Desenvolvimento de uma API robusta para reconhecimento facial 
-        utilizando Python e FastAPI, com containerização em Docker. O projeto implementa detecção e comparação 
-        de faces em tempo real, com alta performance e escalabilidade.`,
+      description: `Vencedor do hackathon interno da Teknisa. Desenvolvimento de uma API robusta para reconhecimento facial utilizando Python e FastAPI, com containerização em Docker.`,
       isHackathonWinner: true
     },
     {
       title: 'MyProjectManager',
-      technologies: ['Vue.js', 'TypeScript', 'Node.js', 'PostgreSQL'],
-      description: `Plataforma web completa para gerenciamento de projetos e tarefas. 
-        Implementada com arquitetura em camadas, permite que usuários criem, 
-        editem e removam projetos e suas tarefas associadas.`,
+      technologies: ['Vue.js', 'TypeScript', 'Node.js', 'Nest.js', 'PostgreSQL'],
+      description: `Plataforma web completa para gerenciamento de projetos e tarefas. Implementada com arquitetura em camadas.`,
       githubUrl: 'https://github.com/ArthurCoelhob/myProjectManager-web'
     },
     {
       title: 'API de Autenticação JWT',
-      technologies: ['Node.js', 'TypeScript', 'JWT', 'PostgreSQL'],
-      description: `API de autenticação robusta implementada com JWT (JSON Web Token). 
-        Oferece funcionalidades de registro de usuários, login seguro e 
-        rotas protegidas com autenticação via token.`,
+      technologies: ['Node.js', 'Express.js', 'TypeScript', 'JWT', 'PostgreSQL'],
+      description: `API de autenticação robusta implementada com JWT. Oferece funcionalidades de registro, login seguro e rotas protegidas.`,
       githubUrl: 'https://github.com/ArthurCoelhob/api-auth-nodejs'
+    },
+    {
+      title: 'Laravel TDD',
+      technologies: ['Laravel', 'PHP', 'PHPUnit', 'TDD'],
+      description: `Projeto de estudo sobre desenvolvimento orientado a testes (TDD) com Laravel e PHPUnit. Implementação de práticas de teste automatizado.`,
+      githubUrl: 'https://github.com/ArthurCoelhob/laravel-tdd'
+    },
+    {
+      title: 'Agenda Fisioterapia/Pilates',
+      technologies: ['Vue.js', 'Node.js', 'MySQL', 'Nest.js'],
+      description: `Sistema de agendamento para estúdio de fisioterapia e pilates. Em desenvolvimento.`,
+    },
+    {
+      title: 'Currículo Digital',
+      technologies: ['Vue.js', 'TypeScript', 'Vuetify'],
+      description: `Portfolio pessoal desenvolvido com Vue.js e Vuetify. Interface responsiva e moderna com download de CV integrado e formulário para envio de e-mails para contato.`,
+      demoUrl: window.location.origin
     }
   ];
 }
@@ -129,12 +185,68 @@ export default class ProjectsSection extends Vue {
   margin-top: 16px;
 }
 
-.project-card {
+.projects-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: var(--v-surface-base) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   transition: all 0.3s ease;
-  height: 100%;
+}
+
+.nav-btn:hover:not(.v-btn--disabled) {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.nav-btn-left {
+  left: 10px;
+}
+
+.nav-btn-right {
+  right: 10px;
+}
+
+.nav-btn.v-btn--disabled {
+  opacity: 0.3;
+}
+
+.theme--dark .nav-btn {
+  background: var(--v-grey-darken3) !important;
+}
+
+.projects-scroll {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 8px 0 24px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.project-card {
+  min-width: 350px;
+  max-width: 350px;
+  transition: all 0.3s ease;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .project-card:hover {

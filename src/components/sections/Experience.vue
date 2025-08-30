@@ -91,7 +91,7 @@ export default {
         company     : 'Teknisa',
         period      : '2021 - 2022',
         color       : 'secondary',
-        description : 'Desenvolvimento de funcionalidades para o sistema de gestão de processos de uma empresa de tecnologia. Utilizando Vue.js, TypeScript e JavaScript. Atuação ativa na condução de reuniões e cerimônias ágeis (Scrum e Kanban), garantindo organização e alinhamento entre equipes.',
+        description : 'Desenvolvimento de funcionalidades para o sistema de gestão de processos de uma empresa de tecnologia. Utilizando Vue.js, TypeScript e JavaScript.',
         technologies: [
           'Vue.js',
           'TypeScript',

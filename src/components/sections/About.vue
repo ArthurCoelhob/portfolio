@@ -63,10 +63,11 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class AboutSection extends Vue {
   private role = 'Desenvolvedor Full Stack';
   private experienceYears = 4;
-  private cvLink = 'https://drive.google.com/uc?export=download&id=1ztDwPyyo64gJIZYHvqCRQoDdJ5hwfRwN';
-
   private handleCVDownload() {
-    window.open(this.cvLink, '_blank');
+    const link = document.createElement('a');
+    link.href = '/assets/cv-arthur-coelho.pdf';
+    link.download = 'Arthur-Coelho-CV.pdf';
+    link.click();
   }
 
   private description = `
